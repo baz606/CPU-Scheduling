@@ -1,0 +1,9 @@
+Name: Shehbaz Khan
+PSID: 1465190
+Course: COSC 3360 - Operating Systems - Homework #1
+Due Date: 23 Feb 2018
+
+Instructions to compile:
+
+The program using C++11 standard and the code is separated in two cpp files so the command you can use the compile properly is:
+    g++ -std=c++11 -o main *.cpp
