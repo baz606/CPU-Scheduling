@@ -1,0 +1,4 @@
+Instructions to compile:
+
+The program using C++11 standard and the code is separated in two cpp files so the command you can use the compile properly is:
+    g++ -std=c++11 -o main *.cpp
