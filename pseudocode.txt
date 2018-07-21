@@ -1,0 +1,99 @@
+Process scheduling
+
+-Preliminaries
+    Eveything in the process scheduling is represented by an event.
+    Every request or a new process is represented by a request with a certain type.
+    Each event has a reference to the request that is controlling that event.
+    Each request and event has a type associated with it that determines what action it takes.
+
+-Sample input file
+    Given an input file such as:
+        NEW 5 ----
+        CORE 100
+        SSD 0
+        CORE 30
+        NEW 20 ----
+        CORE 50
+        SSD 0
+        CORE 50
+        NEW 30 ----
+        CORE 20
+        SSD 0
+        CORE 20
+
+-Pseudocode
+    //Main time simulation loop for event processing
+    for event in eventList
+        if (event.type is START) then //START type refers to NEW process
+            print status of all processes started and not ended //status can be RUNNING, READY or BLOCKED
+            if (event.process.nextRequest = null) then
+                terminate the process
+                print status of all processes started and not ended
+            else if (event.process.nextRequest = CORE) then
+                if (core is free) then
+                    create new event -> newEvent
+                    set newEvent.time = event.time + event.process.nextRequest.requestTime
+                    set newEvent.type = END
+                    add newEvent to the eventList
+                    sort the eventList in an ascending order
+                    set core to busy
+                else
+                    push the request to readyQueue
+            else if (event.process.nextRequest = SSD) then
+                if (ssd is free) then
+                    create new event -> newEvent
+                    set newEvent.time = event.time + event.process.nextRequest.requestTime
+                    set newEvent.type = END
+                    add newEvent to the eventList
+                    sort the eventList in an ascending order
+                    set ssd to busy
+                else
+                    push the request to ssdQueue
+            else if (event.process.nextRequest = INPUT) then
+                if (input is free) then
+                    if (input is free) then
+                        create new event -> newEvent
+                        set newEvent.time = event.time + event.process.nextRequest.requestTime
+                        set newEvent.type = END
+                        add newEvent to the eventList
+                        sort the eventList in an ascending order
+                        set input to busy
+                    else
+                        push the request to inputQueue
+        else if (event.type is END) then
+            if (event.process.requestType = CORE) then
+                set core to free
+                if (readyQueue is not empty) then
+                    create a new event -> newEvent
+                    set newEvent.request = readyQueue.front()
+                    set newEvent.time = event.time + newEvent.request.requestTime
+                    set newEvent.type = END
+                    add newEvent to the eventList
+                    sort the eventList in an ascending order
+                    readyQueue.pop()
+                    set core to busy
+                checkNextRequest //Lines 28-61
+            else if (event.process.requestType = SSD) then
+                set ssd to free
+                if (ssdQueue is not empty) then
+                    create a new event -> newEvent
+                    set newEvent.request = ssdQueue.front()
+                    set newEvent.time = event.time + newEvent.request.requestTime
+                    set newEvent.type = END
+                    add newEvent to the eventList
+                    sort the eventList in an ascending order
+                    ssdQueue.pop()
+                    set ssd to busy
+                checkNextRequest //Lines 28-61
+            else if (event.process.requestType = INPUT) then
+                set input to free
+                if (inputQueue is not empty) then
+                    create a new event -> newEvent
+                    set newEvent.request = inputQueue.front()
+                    set newEvent.time = event.time + newEvent.request.requestTime
+                    set newEvent.type = END
+                    add newEvent to the eventList
+                    sort the eventList in an ascending order
+                    inputQueue.pop()
+                    set input to busy
+                checkNextRequest //Lines 28-61
